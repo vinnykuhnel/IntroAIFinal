@@ -9,12 +9,6 @@ def kNearest(irisData: ndarray):
 
 
 
-
-
-
-
-
-
 irisData = datasets.load_iris()
 kNearest(irisData)
 
