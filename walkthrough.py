@@ -1,9 +1,11 @@
 from numpy import ndarray
 from sklearn import datasets, neighbors
+from sklearn.datasets import load_digits
 from sklearn import model_selection
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.neural_network import MLPClassifier
+from sklearn.cluster import KMeans
 
 
 #Supervised K Nearest Neighbor Algorithm that checks 3 neighbors
@@ -35,8 +37,6 @@ def BackProp(trainData: ndarray, trainTarget: ndarray, testData: ndarray, testTa
     BackMLP = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
     BackMLP.fit(testData, testTarget)
     result = BackMLP.predict(testData)
-    print(result)
-    print(testTarget)
     correctCounter = 0
     for prediction, correct in zip(result, testTarget):
         if prediction == correct:
@@ -44,7 +44,17 @@ def BackProp(trainData: ndarray, trainTarget: ndarray, testData: ndarray, testTa
 
     return (correctCounter / len(testTarget))
 
-#Unsupervised 
+#Unsupervised K means clustering algorithm
+def KCluster(trainData: ndarray, testData: ndarray, testTarget: ndarray):
+    kmc = KMeans(n_clusters = 3, init = 'k-means++', max_iter = 300, n_init = 10, random_state = 0)
+    kmc.fit(trainData)
+    result = kmc.predict(testData)
+    correctCounter = 0
+    for prediction, correct in zip(result, testTarget):
+        if prediction == correct:
+            correctCounter += 1
+
+    return (correctCounter / len(testTarget))
     
 
 #Load data set
@@ -55,6 +65,23 @@ y = irisData.target
 #Randomly split set into training and test data 
 x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.2, random_state=1)
 
-#print(kNearest(x_train, y_train, x_test, y_test))
-#print(DecisionTree(x_train, y_train, x_test, y_test))
+print("Iris dataset: ")
+print("KNearest " + str(kNearest(x_train, y_train, x_test, y_test)))
+print("Decision Tree " + str(DecisionTree(x_train, y_train, x_test, y_test)))
+print("Back Propogation " + str(BackProp(x_train, y_train, x_test, y_test)))
+print("K Means Cluster " + str(KCluster(x_train, x_test, y_test)))
+
+
+digits = load_digits()
+x = digits.data
+y = digits.target
+
+#Randomly split set into training and test data 
+x_train, x_test, y_train, y_test = model_selection.train_test_split(x, y, test_size=0.2, random_state=1)
+
+print("Digits dataset: ")
+#run algorithms again with digits dataset
+print("KNearest " + str(kNearest(x_train, y_train, x_test, y_test)))
+print("Decision Tree " + str(DecisionTree(x_train, y_train, x_test, y_test)))
 print(BackProp(x_train, y_train, x_test, y_test))
+print("K Means Cluster " + str(KCluster(x_train, x_test, y_test)))
