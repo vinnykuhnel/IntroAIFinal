@@ -42,7 +42,7 @@ def GradientDescent(X_train, X_valid, y_train, y_valid, batchSize: int):
 #mnist data set contains examples of handwritten digits
 (X_train, y_train), (X_valid, y_valid) = mnist.load_data()
 
-history = GradientDescent(X_train, X_valid, y_train, y_valid, 1)
+history = GradientDescent(X_train, X_valid, y_train, y_valid, 128)
 plt.plot(history.history['loss'], label='loss')
 plt.plot(history.history['val_loss'], label='validation loss')
 plt.plot(history.history['val_accuracy'], label='validation accuracy')
