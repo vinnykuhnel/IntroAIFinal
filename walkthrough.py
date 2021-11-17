@@ -35,7 +35,7 @@ def BackProp(trainData: ndarray, trainTarget: ndarray, testData: ndarray, testTa
     trainData = scaler.transform(trainData)
     testData = scaler.transform(testData)
     BackMLP = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
-    BackMLP.fit(testData, testTarget)
+    BackMLP.fit(trainData, trainTarget)
     result = BackMLP.predict(testData)
     correctCounter = 0
     for prediction, correct in zip(result, testTarget):
@@ -45,8 +45,8 @@ def BackProp(trainData: ndarray, trainTarget: ndarray, testData: ndarray, testTa
     return (correctCounter / len(testTarget))
 
 #Unsupervised K means clustering algorithm
-def KCluster(trainData: ndarray, testData: ndarray, testTarget: ndarray):
-    kmc = KMeans(n_clusters = 3, init = 'k-means++', max_iter = 300, n_init = 10, random_state = 0)
+def KCluster(trainData: ndarray, testData: ndarray, testTarget: ndarray, clusterNum: int):
+    kmc = KMeans(n_clusters = clusterNum, init = 'k-means++', random_state = 21)
     kmc.fit(trainData)
     result = kmc.predict(testData)
     correctCounter = 0
@@ -69,7 +69,7 @@ print("Iris dataset: ")
 print("KNearest " + str(kNearest(x_train, y_train, x_test, y_test)))
 print("Decision Tree " + str(DecisionTree(x_train, y_train, x_test, y_test)))
 print("Back Propogation " + str(BackProp(x_train, y_train, x_test, y_test)))
-print("K Means Cluster " + str(KCluster(x_train, x_test, y_test)))
+print("K Means Cluster " + str(KCluster(x_train, x_test, y_test, 4)))
 
 
 digits = load_digits()
@@ -83,5 +83,5 @@ print("Digits dataset: ")
 #run algorithms again with digits dataset
 print("KNearest " + str(kNearest(x_train, y_train, x_test, y_test)))
 print("Decision Tree " + str(DecisionTree(x_train, y_train, x_test, y_test)))
-print(BackProp(x_train, y_train, x_test, y_test))
-print("K Means Cluster " + str(KCluster(x_train, x_test, y_test)))
+print("Back Propogation " + str(BackProp(x_train, y_train, x_test, y_test)))
+print("K Means Cluster " + str(KCluster(x_train, x_test, y_test, 10)))
